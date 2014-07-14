@@ -1,0 +1,79 @@
+.content-container {
+	/*min-width:1000px;*/
+	box-shadow: 0 0 20px 10px rgb(213,213,213);
+	float:left;
+	width: 90%;
+	margin-left: 5%;
+	margin-right: 5%;
+	background-color:white;
+	height:620px;
+	margin-top:20px;
+	padding-top:30px;
+}
+.libraryHeader{
+	border-bottom:1px solid rgb(135,135,135);
+	margin-left: 5%;
+	margin-right: 5%;
+	padding-bottom: 5px;
+	font-size: 20px;
+	color: rgb(135,135,135);
+}
+.delete {
+	float: right;
+	color:rgb(211,0,47);
+	height:25px;
+	border:none;
+	padding:0;
+	margin:0;
+	background:none;
+}
+.delete:hover {
+	border:none;
+	background:none;
+	float: right;
+}
+.itemLibrary{
+	width:33.3%;
+	height:50%;
+	float:left;
+	padding-left:5%;
+	padding-right:5%;
+}
+.itemLibrary p{
+	float: left;
+	padding: 0;
+	margin: 0;
+	height: 25px;
+	font-family:Lato;
+	font-style: italic;
+	font-size: 19px;
+	color:rgb(85,85,85);
+	font-weight:100;
+	letter-spacing:2px;
+}
+.proposalLibrary{
+	overflow-y: scroll;
+	margin-top:20px;
+	margin-bottom:20px;
+	height:520px;
+}
+
+canvas{
+	cursor:pointer;
+	width:100%;
+}
+#tabLibrary{
+	cursor: pointer;
+	background-color: rgb(54,54,54);
+	height: 100px;
+	width: 45px;
+	left:-45px;
+	position: relative;
+	top: 100px;
+}
+
+#leftLibrary {
+	float: right;
+	width: 15%;
+	height:400px;
+}

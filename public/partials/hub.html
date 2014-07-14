@@ -1,6 +1,16 @@
+<link rel="stylesheet" href="stylesheets/hub.css">
 <div class="content-container">
-  <p>Welcome {{session.currentUser.name}}!</p>
-  <ul>
-    <li ng-repeat="page in pages"><a ng-href="{{page.url}}">{{page.name}}</a></li>
-  </ul>
+	<div class="libraryHeader">MY PROPOSALS</div>
+		<div class='proposalLibrary' ng-init="loadProposal()">
+			<div class='itemLibrary' 
+					ng-repeat="proposal in proposalList track by $index" 
+					proposal-directive='{{proposal.proposalname}}_{{session.currentUser.email}}.pdf'>
+				<canvas id="{{proposal.proposalname}}_{{session.currentUser.email}}.pdf" 
+				style="border:1px  solid black"
+				ng-click='loadinProposal(proposal._id,proposal.proposalname)'></canvas>
+				<button class="delete" ng-click="removeProposal(proposal._id,proposal.proposalname)">X</button>
+				<p>  {{proposal.proposalname}}</p>
+			</div>
+		</div>
+	</div>
 </div>

@@ -18,5 +18,17 @@
     "connect-mongo": "*",
     "crypto": "*",
     "pdfkit": "*"
-  }
+  },
+  "description": "Proposal Page",
+  "main": "app.js",
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git@heroku.com:proposal.git"
+  },
+  "author": "Julio Carozo",
+  "license": "ISC"
 }
+
+
+ 

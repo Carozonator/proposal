@@ -1,6 +1,4 @@
-.content-container {
-	box-shadow: none;
-}
+
 .footer-form ::-webkit-input-placeholder {
   color: #fff;
   font-size: 15px;
@@ -33,7 +31,7 @@ textarea:focus {
 }
 
 body {
-	background-color: #f2f2f2;
+	background-color: rgb(234,234,234);;
 }
 .clear {
 	clear: both;

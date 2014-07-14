@@ -25,10 +25,12 @@ exports.iconList = function(db) {
  */
 
  exports.uploadIcon = function(req,res,next) {
+    
    var oldPath = req.files.file.path;
    fs.readFile(oldPath, function (err, data) {
     var fileName = req.files.file.originalFilename;
-    fs.rename(oldPath, __dirname+'/../public/icons/' + fileName, function (err) {
+    fs.rename(oldPath, 'public/icons/' + fileName, function (err) {
+        console.log('public/icons/' + fileName);
       if (err) return next(err);
       res.status(200).send("Success!");
     });

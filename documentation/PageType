@@ -82,6 +82,22 @@
           ypos: 20, // Y coordinate position for the asset in terms of 0-100 scale relative to height of the page
           width: 60, // Width of the asset in terms of 0-100 scale of the width of the page
           height: 10, // Height of the asset in terms of 0-100 scale of the height of the page
+          columns: {[]}, // Number of columns in the table
+          
+          background: { // Background settings for the asset
+            image: false, // True if using an image based background for the asset
+            color: "String", // Color string using hex including the #
+            source: "String" // Source string only used if 'image' is set to true
+          }
+        },
+      { // Single asset: Pricing Table
+        exists: false, // True if the asset is active for the page
+        assettype: "pricing", // Name of the asset type
+        settings: { // Settings for the individual asset
+          xpos: 20, // X coordinate position for the asset in terms of 0-100 scale relative to width of the page
+          ypos: 20, // Y coordinate position for the asset in terms of 0-100 scale relative to height of the page
+          width: 60, // Width of the asset in terms of 0-100 scale of the width of the page
+          height: 10, // Height of the asset in terms of 0-100 scale of the height of the page
           columns: 3, // Number of columns in the table
           background: { // Background settings for the asset
             image: false, // True if using an image based background for the asset

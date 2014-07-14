@@ -5,7 +5,8 @@
 angular.module('app', [
   'ngRoute',
   'ngAnimate',
-  'ui.sortable']).
+  'ui.sortable',
+  'localytics.directives']).
 config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/', {
   	templateUrl: 'partials/frontpage.html', 
