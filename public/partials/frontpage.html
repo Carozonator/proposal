@@ -54,7 +54,7 @@
 	</div>
 	<div ng-controller="loginCtrl" class="login-container" ng-show="showLogin" >
 		<form ng-submit="session.login(userInfo)">
-			<div class="row login-title">WELCOME BACK</div>
+			<div class="row login-title">WELCOME BACK {{userInfo}}</div>
 			<div class="row">
 				<p>Email</p>
 				<input type="text" name="email" ng-model="userInfo.email" placeholder="Email">

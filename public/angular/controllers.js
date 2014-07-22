@@ -35,7 +35,6 @@ appCtrl.controller('registrationCtrl', ['$scope', '$rootScope','$http', function
 	$scope.showLogin=function(){
 		$rootScope.showLogin=true;
 		$scope.showRegistration=false;
-		$rootScope.$apply();
 	}
 	$scope.userInfo = {};
 	$scope.companySizes=["1-25","26-100","100+"];

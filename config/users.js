@@ -30,18 +30,8 @@ exports.session = function(req, res) {
 exports.create = function(req, res, next) { 
   User.findOne({email:req.body.email},function(err,userfind){
     if (userfind == null) {
-    	req.body.name="Julio";
-    	req.body.lastname="carozo";
-    	req.body.companySize="25+";
-    	req.body.companyName="BMS";
-    	req.body.password="holahola";
-    	req.body.confirmPassword="holahola";
-    	req.body.email="hola@gmail.com";
-    	req.body.confirmEmail="hola@gmail.com";
-
       var user = new User(req.body);
       user.username=req.body.email;
-      console.log("-->",user);
       user.provider = 'local';
       req.assert('email', 'You must enter a valid email.').isEmail();
       req.assert('password', 'Password must be between 8-20 characters long.').len(5,20);

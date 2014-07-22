@@ -27,9 +27,9 @@
 		<div style="float:none">
 			Proposal Generator
 		</div>
-		<div ng-show="currentUser!=null" style="float:none;margin-top: -6px; margin-left: 1px;">
+		<div ng-show="session.currentUser!=null" style="float:none;margin-top: -6px; margin-left: 1px;">
 			<div >
-				<span>Welcome, {{currentUser.name}}.</span>
+				<span>Welcome, {{session.currentUser.name}}.</span>
 			</div>
 			<div style="margin-top:3px;margin-left:5px">
 				<a href="/#/settings"><img style="width:15px"src="stylesheets/images/settings.png"/></a>
@@ -37,11 +37,11 @@
 		</div>
 		</div>
 	<div id="headerMenu" >
-		<div ng-show="isLoggedIn" ng-class="{currentHeader:($location.path()=='/hub')}"><a href="/#/hub">DASHBOARD</a></div>
-		<div ng-show="isLoggedIn" ng-class="{currentHeader:($location.path()=='/pagebuilder')}"><a href="/#/pagebuilder">MY PAGES</a></div>
-		<div ng-show="isLoggedIn" ng-class="{currentHeader:($location.path()=='/create')}"><a href="/#/create">EDITOR</a></div>
-		<div ng-show="isLoggedIn" id="separator">|</div>
-		<div ng-show="isLoggedIn" id="logout"><font color="red"><a href="/logout">LOG OUT</a></font></div>
+		<div ng-show="session.isLoggedIn" ng-class="{currentHeader:($location.path()=='/hub')}"><a href="/#/hub">DASHBOARD</a></div>
+		<div ng-show="session.isLoggedIn" ng-class="{currentHeader:($location.path()=='/pagebuilder')}"><a href="/#/pagebuilder">MY PAGES</a></div>
+		<div ng-show="session.isLoggedIn" ng-class="{currentHeader:($location.path()=='/create')}"><a href="/#/create">EDITOR</a></div>
+		<div ng-show="session.isLoggedIn" id="separator">|</div>
+		<div ng-show="session.isLoggedIn" id="logout"><font color="red"><a href="/logout">LOG OUT</a></font></div>
 		<div id="helpIcon"><img src='stylesheets/images/helpIcon.png'/></div>
 	</div>
 </div>

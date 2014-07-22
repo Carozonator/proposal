@@ -10,28 +10,31 @@ angular.module('app').factory('sessionService', ['$rootScope', '$window', '$http
         this.resetSession();
       },
       login: function(userInfo) {
+      	console.log("it nevers enters here !");
         var scope = this;
         $http.post('/login', {
           email: userInfo.email,
           password: userInfo.password
         })
         .success(function(response) {
-          // authentication OK
-          $rootScope.currentUser = userInfo;
-          $rootScope.isLoggedIn = true;
-          $rootScope.user = userInfo.name;
-          $rootScope.email = userInfo.email;
-          $rootScope.$emit('session-changed');
-          if (response.redirect) {
-            if (window.location.href === response.redirect) {
-              //This is so an admin user will get full admin page
-              window.location.reload();
-            } else {
-              window.location = response.redirect;
-            }
-          } else {
-            $location.url('/hub');
-          }
+			// authentication OK
+			session.currentUser = userInfo;
+			session.isLoggedIn = true;
+			session.user = userInfo.email;
+			session.email = userInfo.email;
+			$rootScope.$emit('session-changed');
+			console.log(response);
+			console.log("------>",$rootScope.user);
+			if (response.redirect) {
+				if (window.location.href === response.redirect) {
+				//This is so an admin user will get full admin page
+				window.location.reload();
+				} else {
+				window.location = response.redirect;
+				}
+			} else {
+				$location.url('/hub');
+			}
         })
         .error(function(response) {
           $rootScope.loginError = "Your login information is incorrect.";
