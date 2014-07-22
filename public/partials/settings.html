@@ -14,10 +14,14 @@
 		<div class="row">
 			<div class="leftRowContainer">
 				<p>Email</p>
-				<input ng-model='user.email' name='email'></input>
+				<input ng-model='user.email' name='email' disabled></input>
+			</div>
+			<div class="rightRowContainer">
+				<p>Change Email?</p>
+				<input type='checkbox' ng-model='changeEmail' ng-init='changeEmail=false'/>
 			</div>
 		</div>
-		<div class="row">
+		<div class="row" ng-show='changeEmail'>
 			<div class="leftRowContainer">
 				<p>New Email</p>
 				<input ng-model='user.newEmail' name='newEmail'></input>
@@ -29,23 +33,48 @@
 		</div>
 		<div class="row">
 			<div class="leftRowContainer">
-				<p>Old Password</p>
-				<input ng-model='user.password' name='password'></input>
+				<p>Current Password</p>
+				<input type='password' ng-model='user.password' name='password'></input>
+			</div>
+			<div class="rightRowContainer">
+				<p>Change Password?</p>
+				<input type='checkbox' ng-model='changePassword' ng-init='changePassword=false'/>
+			</div>
+		</div>
+		<div class="row" ng-show='changePassword'>
+			<div class="leftRowContainer">
+				<p>New Password</p>
+				<input type='password' ng-model='user.newPassword' name='newPassword'></input>
+			</div>
+			<div class="rightRowContainer">
+				<p>Confirm New Password</p>
+				<input type='password' ng-model='user.confirmPassword' name='confirmPassword'></input>
 			</div>
 		</div>
 		<div class="row">
 			<div class="leftRowContainer">
-				<p>New Password</p>
-				<input ng-model='user.newPassword' name='newPassword'></input>
+				<p>Company Name</p>
+				<input type="text" name="companyName" ng-model="user.companyName">
 			</div>
 			<div class="rightRowContainer">
-				<p>Confirm New Password</p>
-				<input ng-model='user.confirmPassword' name='confirmPassword'></input>
+				<p>Company Size</p>
+				<select chosen
+						name="user.companySize"
+						disable-search="true"
+						data-placeholder="COMPANY SIZE"
+						ng-model="user.companySize"
+						ng-options="size for size in companySizes"
+						>
+					<option value=""></option>
+				</select>
 			</div>
 		</div>
 		<div><p ng-repeat="error in errorMessage">{{error}}</p></div>
 		<div class="row">
 			<button id="saveProp" ng-click='saveChanges()'>SAVE CHANGES</button>
+		</div>	
+		<div class="row">
+			<button id="saveProp" ng-click='deleteAccount()'>DELETE ACCOUNT</button>
 		</div>								
 	</div>
 </div>

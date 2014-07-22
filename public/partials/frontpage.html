@@ -49,22 +49,19 @@
 					<button type="submit">REGISTER</button>
 				</div>
 			</div>
-			<div class="row">{{userInfo}}</div>
 		</form>
 	</div>
 	<div ng-controller="loginCtrl" class="login-container" ng-show="showLogin" >
 		<form ng-submit="session.login(userInfo)">
-			<div class="row login-title">WELCOME BACK {{userInfo}}</div>
+			<div class="row login-title">WELCOME BACK</div>
 			<div class="row">
-				<p>Email</p>
 				<input type="text" name="email" ng-model="userInfo.email" placeholder="Email">
 			</div>
 			<div class="row">
-				<p>Password</p>
 				<input type="password" name="password" ng-model="userInfo.password" placeholder="Password">
 			</div>
 			<div class="row">
-				<p class="password">Forgot Password</p>
+				<p class="password" ng-click="forgotPassword()">Forgot Password</p>
 			</div>
 			<div class="row">
 				<button type="submit">LOGIN</button>

@@ -94,6 +94,7 @@
 	float:right;
 	color:rgb(70,70,70);
 	font-weight:200;
+	cursor:pointer;
 }
 .register{
 	margin-top:12px !important;

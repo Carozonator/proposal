@@ -23,8 +23,6 @@ angular.module('app').factory('sessionService', ['$rootScope', '$window', '$http
 			session.user = userInfo.email;
 			session.email = userInfo.email;
 			$rootScope.$emit('session-changed');
-			console.log(response);
-			console.log("------>",$rootScope.user);
 			if (response.redirect) {
 				if (window.location.href === response.redirect) {
 				//This is so an admin user will get full admin page
@@ -55,10 +53,10 @@ angular.module('app').factory('sessionService', ['$rootScope', '$window', '$http
           companySize: userInfo.companySize
         })
         .success(function() {
-          $rootScope.currentUser = userInfo;
-          $rootScope.isLoggedIn = true;
-          $rootScope.user = userInfo.name;
-          $rootScope.email = userInfo.email;
+          session.currentUser = userInfo;
+          session.isLoggedIn = true;
+          session.user = userInfo.name;
+          session.email = userInfo.email;
           $rootScope.$emit('session-changed');
           $location.url('/hub');
         })

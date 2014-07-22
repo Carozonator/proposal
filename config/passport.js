@@ -50,7 +50,6 @@ module.exports = function (passport,fbID,fbSecret) {
         passwordField: 'password'
     },
     function(email, password, done) {
-    	console.log("local");
         User.findOne({
             email: email
         }, function(err, user) {

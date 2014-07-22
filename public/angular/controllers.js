@@ -26,6 +26,18 @@ appCtrl.controller('homeCtrl', ['$scope', '$rootScope', '$http',
 // Login CONTROLLER
 appCtrl.controller('loginCtrl', ['$scope', '$rootScope','$http',function($scope,$rootScope,$http) {
 	$scope.userInfo = {};
+	$scope.forgotPassword = function(){
+		console.log($scope.userInfo.email);
+		if (($scope.userInfo.email==null)||($scope.userInfo.email.length==0)){
+			$rootScope.loginError = "Your must put a valid email";
+		}else{
+			$http.post('/forgotPassword',$scope.userInfo).success(function(data){
+	    		console.log(data);
+	    	}).error(function() {
+	    		alert('Forget password Error!');
+	    	});
+	    }
+	}
 }]);
 
 // REGISTRATION CONTROLLER
@@ -35,6 +47,7 @@ appCtrl.controller('registrationCtrl', ['$scope', '$rootScope','$http', function
 	$scope.showLogin=function(){
 		$rootScope.showLogin=true;
 		$scope.showRegistration=false;
+		$scope.userInfo = {};
 	}
 	$scope.userInfo = {};
 	$scope.companySizes=["1-25","26-100","100+"];
@@ -768,33 +781,45 @@ function refreshProposalCanvas(pageId){
 // Settings Controller
 appCtrl.controller('settingsController', ['$scope',"$http",'$rootScope','$window',function($scope,$http,$rootScope,$window) {
 	$scope.user = $rootScope.session.currentUser;
+	$scope.companySizes=["1-25","26-100","100+"];
 	$scope.saveChanges=function(){
+	var user=$scope.user;
 	$scope.errorMessage=[];
+		//Name and Lastname validations
 		if ((user.name==null)||(user.name.isEmpty())){
-			$scope.errorMessage.push("Name shouldnt be Empty. ");
+			$scope.errorMessage.push("Name shouldn't be Empty. ");
 		}
 		if((user.lastname==null)||(user.lastname.isEmpty())){
-			$scope.errorMessage.push("Lastname shouldnt be Empty. ");
+			$scope.errorMessage.push("Lastname shouldn't be Empty. ");
 		}
-		if((user.email==null)||(user.email.isEmpty())){
-			$scope.errorMessage.push("Email shouldnt be Empty. ");
-		}else{
-			if((user.newEmail==null)||(user.newEmail.isEmpty())){
-				$scope.errorMessage.push("New email shouldnt be Empty. ");
-			}else if(!isEmail(user.newEmail)){
-				$scope.errorMessage.push("Not valid email");
-			}else if (user.newEmail!=user.confirmEmail){
-				$scope.errorMessage.push("Emails doesn't match. ");
+		//Change Email Validation
+		if ($scope.changeEmail){
+			if((user.email==null)||(user.email.isEmpty())){
+				$scope.errorMessage.push("Email shouldn't be Empty. ");
+			}else{
+				if((user.newEmail==null)||(user.newEmail.isEmpty())){
+					$scope.errorMessage.push("New email shouldnt be Empty. ");
+				}else if(!isEmail(user.newEmail)){
+					$scope.errorMessage.push("Not valid email");
+				}else if (user.newEmail!=user.confirmEmail){
+					$scope.errorMessage.push("Emails doesn't match. ");
+				}
 			}
+		}else{
+			delete user.newEmail;
+			delete user.confirmEmail;
 		}
 		if ((user.password==null)|| (user.password.isEmpty()) ){
 			$scope.errorMessage.push("Please put your password to submit changes. ");
-		}else{
+		}
+		if ($scope.changePassword){
 			if ((user.newPassword==null)||(user.newPassword.isEmpty())){
-				$scope.errorMessage.push("New password cant be empty. ");
+				$scope.errorMessage.push("New password shouldn't be empty. ");
 			}else if (user.newPassword!=user.confirmPassword){
 				$scope.errorMessage.push("Passwords doesn't match. ");
 			}
+		}else{
+			delete user.newPassword;
 		}
 		if ($scope.errorMessage.length==0){
 			console.log('send changes user');
@@ -804,7 +829,7 @@ appCtrl.controller('settingsController', ['$scope',"$http",'$rootScope','$window
 		}
 	}
 	$scope.deleteAccount = function(){
-		$http.delete('/accountDelete/'+"hola");
+		$http.delete('/accountDelete/'+$scope.user._id);
 	}
 	String.prototype.isEmpty = function() {
 	    return (this.length === 0 || !this.trim());
