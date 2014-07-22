@@ -5,17 +5,14 @@ Proposal = mongoose.model('Proposal');
 /*
  * GET memes listing.
  */
-
  exports.list = function(req, res, next) {
- 	Proposal.find({owner: req.user.email},{proposalname: true, _id:true},function(err,proposals){
+ 	Proposal.find({owner: req.user.username},function(err,proposals){
  		if (err) return next(err);
  		if (!proposals) return next("empty");
  		res.status(200).send(proposals);
  	});
  };
-
 /* POST to addmeme */
-
  exports.load = function(req, res, next) {
  	Proposal.find({_id: req.body.chosen, owner: req.user.email }).exec(function(err,proposal){
  		if (err) return next(err);
@@ -26,31 +23,32 @@ Proposal = mongoose.model('Proposal');
 
  exports.genproposal = function() {
  	return function(req,res) {
+ 		console.log("------Generating Proposal by",req.body.username,"-------");
  		var pageSize = {
  			width: 1294,
  			height: 999
  		};
  		var count = 0;
  		var doc = new PDFDocument({layout:'landscape',margin: 0,size:[1003.00, 1298.00]});
- 		var stream = doc.pipe(fs.createWriteStream('public/pdf/' + req.body.proposalname+"_"+req.body.username + '.pdf'));
-    // Iterate through the pages
-    req.body.pages.forEach(function(page){
-    	if (count !== 0) {
-    		doc.addPage();
-    	}
-    	count += 1;
-    	formatPage(doc,page,pageSize);
-    	addTextBodies(page.pagesetup.textbody,pageSize,doc);
-    	addImages(page.pagesetup.imagearea,pageSize,doc);
-    	page.pagesetup.etc.sort(sortfunction);
-    	addEtc(page.pagesetup.etc,pageSize,doc,page,true);
-
-    });
-    doc.end();
-    stream.on('finish', function() {
-    	res.send(200);
-    });
-};
+ 		var stream = doc.pipe(fs.createWriteStream('public/pdf/' + req.body.proposalname+"_"+req.body.usernamewho + '.pdf'));
+	    // Iterate through the pages
+	    req.body.pages.forEach(function(page){
+	    	if (count !== 0) {
+	    		doc.addPage();
+	    	}
+	    	console.log(count);
+	    	formatPage(doc,page,pageSize);
+	    	addTextBodies(page.pagesetup.textbody,pageSize,doc);
+	    	addImages(page.pagesetup.imagearea,pageSize,doc);
+	    	page.pagesetup.etc.sort(sortfunction);
+	    	addEtc(page.pagesetup.etc,pageSize,doc,page,true);
+	    	count += 1;
+	    });
+	    doc.end();
+	    stream.on('finish', function() {
+	    	res.send(200);
+	    });
+	};
 };
 
 exports.addProposal = function(req, res, next) {
@@ -76,35 +74,8 @@ exports.delete = function(req,res){
 				res.status(200).send("success!");
 			}
 		});
-
 	});
 }
-
-
-exports.updateMeme = function(db) {
-	return function(req, res) {
-		var usern = req.body.username;
-		var mmn = req.body.memename;
-		db.collection('memelist').update({"username" : usern, "memename" : mmn }, req.body, function(err, result){
-			res.send(
-				(err === null) ? { msg: ''} : { msg: err }
-				);
-		});
-	};
-};
-
-/*
- * DELETE to deletememe WHAT IS THIS ? ?  ? ?
- */
-
- exports.deletememe = function(db) {
- 	return function(req, res) {
- 		var memeToDelete = req.body.id;
- 		db.collection('memelist').removeById(memeToDelete, function(err, result) {
- 			res.send((result === 1) ? { msg: '' } : { msg:'error: ' + err });
- 		});
- 	};
- };
  
  function serviceTable(doc,item,pageSize,page) {
  	var tableinfo=item.settings.pagetext;
@@ -113,16 +84,8 @@ exports.updateMeme = function(db) {
  	var y=(item.settings.ypos/100)*pageSize.height;
  	var width=(item.settings.width/100)*pageSize.width;
  	var height=(item.settings.height)*pageSize.height;
- 	if (item.settings.existsDiscount){
- 		discount=item.settings.discount;
- 	}else{
- 		discount=0;
- 	}
- 	if (item.settings.existsTax){
- 		tax=item.settings.tax;
- 	}else{
- 		tax=0;
- 	}
+	discount=parseFloat(item.settings.discount);
+	tax=parseFloat(item.settings.tax);
  	doc.moveTo(x,y)
     //TITLE OF THE TABLE
     .fontSize(30)
@@ -170,8 +133,7 @@ exports.updateMeme = function(db) {
         		doc.moveDown(0.25).text("»   "+tableinfo[i].pservice[j].text, {indent:20});
         	}
         }
-        priceSubTotal += parseInt(tableinfo[i].psub.slice(1).replace(',',''));
-        
+        priceSubTotal += parseFloat(tableinfo[i].psub);
     }
     grandTotal = priceSubTotal - discount;
     grandTotal= (1-(tax/100))*grandTotal;
@@ -191,15 +153,11 @@ exports.updateMeme = function(db) {
     .text("$"+priceSubTotal);
     if (discount !== 0) {
     	doc
-
     	.text('Discount: ',{continued:true})
-
     	.text("$"+discount);  
     }if (tax !== 0) {
     	doc
-
     	.text('Tax: ',{continued:true})
-
     	.text("%"+tax);  
     }
     doc
@@ -210,10 +168,12 @@ exports.updateMeme = function(db) {
 function formatPage(doc,page,pageSize) {
   // Check Settings for Background
   if (page.background.image === false) {
+  	console.log("Coloring Background");
   	doc.rect(0,0,pageSize.width,pageSize.height).fillAndStroke(page.background.color);
   } else {
-        // doc.image(page.background.source, 0, 0, {width: pageSize.width, height: pageSize.height});
-    }
+  	console.log("Image on Background",page.background.source,"|");
+  	doc.image("public/icons/"+page.background.source, 0, 0, {width: pageSize.width, height: pageSize.height});
+  }
       //Check Settings for Header
       if (page.pagesetup.header.exists === true) {
       	console.log("Creating Header");
@@ -382,8 +342,6 @@ function addTextBodies(textbody,pageSize,doc){
 				});
 		}
 	});
-
-
 }
 
 function sortfunction(a, b){

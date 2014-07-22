@@ -34,9 +34,7 @@ module.exports = function (passport, db) {
 
     if ('development' == app.get('env')) {
         app.use(express.errorHandler());
-
         app.use(function(req, res, next) {
-             console.log(req.url);
              next();
         });
     }

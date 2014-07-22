@@ -5,7 +5,6 @@ var appCtrl = angular.module('app');
      $scope.$route = $route;
      $scope.$location = $location;
      $scope.$routeParams = $routeParams;
-     console.log($location.path());
  });
 // Home Controller
 appCtrl.controller('homeCtrl', ['$scope', '$rootScope', '$http',
@@ -25,16 +24,24 @@ appCtrl.controller('homeCtrl', ['$scope', '$rootScope', '$http',
 	}]);
 
 // Login CONTROLLER
-appCtrl.controller('loginCtrl', ['$scope','$http',function($scope,$http) {
+appCtrl.controller('loginCtrl', ['$scope', '$rootScope','$http',function($scope,$rootScope,$http) {
 	$scope.userInfo = {};
 }]);
 
 // REGISTRATION CONTROLLER
-appCtrl.controller('registrationCtrl', ['$scope','$http', function($scope,$http) {
+appCtrl.controller('registrationCtrl', ['$scope', '$rootScope','$http', function($scope,$rootScope,$http) {
+	$rootScope.showLogin=false;
+	$scope.showRegistration=true;
+	$scope.showLogin=function(){
+		$rootScope.showLogin=true;
+		$scope.showRegistration=false;
+		$rootScope.$apply();
+	}
 	$scope.userInfo = {};
+	$scope.companySizes=["1-25","26-100","100+"];
 }]);
 
-// BUILDER CONTROLLER
+// BUILDER CONTRLLER
 appCtrl.controller('builderCtrl', ['$scope','$rootScope','$http','$window','$location', function($scope,$rootScope,$http,$window,$location) {
     // Setting up Variables
     // Array of pages
@@ -157,7 +164,7 @@ appCtrl.controller('builderCtrl', ['$scope','$rootScope','$http','$window','$loc
     			ypos: 30,
     			width: 80,
     			height: 10,
-    			size: 40,
+    			size: 18,
     			font: "Helvetica",
     			underline:false,
     			bold:false,
@@ -241,7 +248,7 @@ appCtrl.controller('builderCtrl', ['$scope','$rootScope','$http','$window','$loc
     				text:"Branding Guide"},{
     					text:"Letterhead"},{
     						text:"Business Card Templates"}],
-    						psub: "$5,000.00",
+    						psub: "5000",
     						ptime: "1 Month"}],
     						pagetitle: false,
     						pagetype: "tablepage"
@@ -284,10 +291,19 @@ appCtrl.controller('builderCtrl', ['$scope','$rootScope','$http','$window','$loc
     	$scope.containerHeight = $window.innerHeight - 120;
     }; 
     $scope.savePage = function() {
-    	var confirm = $window.confirm("Are you sure you want to save? Make sure your name is unique or it will overwrite similarly named pages.");
-    	if (confirm == false) {
-    		return;
-    	}
+
+	var newPage = true;
+	$scope.pageTypes.forEach(function(element,index,array) {
+		if (element.typename === $scope.pagePreview.typename) {
+			newPage = false;
+		}
+	});
+	if (newPage === false) {
+		var confirm = $window.confirm("This Page name is already taken, would you like to overwrite it?");
+		if (confirm === false) {
+			return;
+		}
+	}
     	$http.post('/proposalpage',$scope.pagePreview).success(function(res){
     		$scope.loadPageTypes();
     	//	$scope.$apply();
@@ -335,7 +351,8 @@ appCtrl.controller('createController', ['$scope','$rootScope','$http','$document
 	$scope.disabled = false;
 	$scope.beginDots=false;
 	$scope.endDots=false;	
-
+	$scope.previewShow=false;
+	$scope.fonts=["Times-Roman","Helvetica","Courier"];
     $scope.loadPageTypes = function() {
     	$http.get('/proposalpage').success(function(res){
     		$scope.pageTypes = res;
@@ -393,16 +410,12 @@ appCtrl.controller('createController', ['$scope','$rootScope','$http','$document
     	}
     };
     function updateActivePage(pagesQuantity){
-    	console.log("Current:"+$scope.currentPage,"pagesQuantity:"+pagesQuantity,"Shift:"+$scope.shift);
     	if (pagesQuantity>5){
     		if ($scope.currentPage<3){
-    			console.log("zona I :inicio");
     			$scope.shift=0;
     		}else if (($scope.currentPage>=3)&&(($scope.currentPage+3)<pagesQuantity)){
-    			console.log("zona II : medio");
     			$scope.shift=$scope.currentPage-2;
     		}else{
-    			console.log("zona III : final");
     			$scope.shift=pagesQuantity-5;
     		}
     		if ($scope.currentPage>2){
@@ -419,8 +432,6 @@ appCtrl.controller('createController', ['$scope','$rootScope','$http','$document
     		$scope.beginDots=false;
     		$scope.endDots=false;
     	}
-    	
-    	console.log("current",$scope.currentPage,"total",pagesQuantity,"shift",$scope.shift);
     }
     $scope.previousPage = function(pagesQuantity){
     	if ((pagesQuantity>0)&&($scope.currentPage>0)){
@@ -506,11 +517,12 @@ appCtrl.controller('createController', ['$scope','$rootScope','$http','$document
     $scope.addPage = function() {
     	var selectedPage=$scope.pageTypeName;
 		if (selectedPage==undefined){
-			$scope.pageError="Select a page!";
+			$scope.pageError=true;
 		}else{
-			$scope.pageError="";
+			$scope.pageError=false;
 		    // add the current page to the list of the display pages on the left
-		    $scope.propInfo.pages.splice($scope.currentPage+1,0,selectedPage);
+		    var newPage = jQuery.extend(true, {}, selectedPage);
+		    $scope.propInfo.pages.splice($scope.currentPage+1,0,newPage);
 		    $scope.nextPage($scope.propInfo.pages.length);
 		}
 	};
@@ -520,17 +532,18 @@ appCtrl.controller('createController', ['$scope','$rootScope','$http','$document
 	$scope.deleteRow = function(parentindex,index) { 
 	};
 	$scope.addRow = function(index) {
-		console.log("meow");
 	};
 // Generate the PDF Proposal
 $scope.genProposal = function() {
     // get current user
+    $scope.previewShow=true;
     var proposal = $scope.propSaveName;
     var user = $scope.useremail;
     $scope.propInfo.username=user;
    // request the pdf file and sends propInfo as a parameter for its creation
    $scope.propInfo.proposalname=proposal;
    $http.post('/genPDF',$scope.propInfo).success(function(res){
+   	$scope.pdfFile= proposal+ "_" + user +".pdf";
    	$document.find("iframe").attr("src","pdf/" + proposal+ "_" + user +".pdf");
    }).error(function() {
    	alert('Error!');
@@ -585,13 +598,12 @@ $scope.replaceAll = function() {
 	$scope.propInfo = JSON.parse(stringified);
 };
 $scope.addPackage = function(pageIndex,etcIndex) {
-	console.log(pageIndex,etcIndex);
 	$scope.propInfo.pages[pageIndex]
 	.pagesetup.etc[etcIndex]
 	.settings.pagetext.push({
 		pname: "Branding Package",
 		pservice: [{text:"Logo"},{text:"Branding Guide"},{text:"Letterhead"},{text:"Business Card Templates"}],
-		psub: "$5,000.00",
+		psub: "5000",
 		ptime: "1 Month"
 	});
 };
@@ -621,6 +633,12 @@ $scope.updateImage = function (item,page,type){
 $scope.dropzoneConfig = {
     'options': { // passed into the Dropzone constructor
     	url: '/uploadImage',
+    	uploadMultiple:false,
+    	acceptedFiles:"image/*",
+    	paramName:"file",
+    	parallelUploads:1,
+    	clickable:true,
+    	maxFilesize:2,
     	accept: function(file, done) {
     		if (file) {
     			if (this.files[1]!=null){
@@ -641,11 +659,17 @@ $scope.dropzoneConfig = {
     				$scope.propInfo
     				.pages[$scope.page]
     				.pagesetup.footer.settings.source=file.name;
+    			}else if ($scope.type==="background"){
+    				$scope.propInfo
+    				.pages[$scope.page]
+    				.background.source=file.name;
     			}
+    			done();
     		}
     	}
     }
 };
+
 }]);
 
 // Menu Controller
@@ -659,8 +683,14 @@ appCtrl.controller('hubController', ['$scope',"$http",'$rootScope','$window',fun
 		url: "/#/pagebuilder"
 	}
 	];
-
 	$scope.proposalList = [];
+	$scope.sendMail=function(){
+		$http.get('/sendMail').success(function(res){
+	    	console.log(res);
+	    }).error(function(){
+	    	console.log("There was an error.");
+	    });
+	}
 	$scope.loadProposal= function(){
 		$http.get('/proposalList').success(function(res){
 	    	$scope.proposalList = res;
@@ -712,7 +742,6 @@ function refreshProposalCanvas(pageId){
 	}
 	for (var i=0;i<n;i++){
 		var url=canvasCollection[i];
-		console.log(url);
 		PDFJS.getDocument(url).then(function getFirst(pdf) {
        //
        // Fetch the first page
@@ -735,4 +764,54 @@ function refreshProposalCanvas(pageId){
    });
 	}
 }
+}]);
+
+// Settings Controller
+appCtrl.controller('settingsController', ['$scope',"$http",'$rootScope','$window',function($scope,$http,$rootScope,$window) {
+	$scope.user = $rootScope.session.currentUser;
+	$scope.saveChanges=function(){
+	$scope.errorMessage=[];
+		if ((user.name==null)||(user.name.isEmpty())){
+			$scope.errorMessage.push("Name shouldnt be Empty. ");
+		}
+		if((user.lastname==null)||(user.lastname.isEmpty())){
+			$scope.errorMessage.push("Lastname shouldnt be Empty. ");
+		}
+		if((user.email==null)||(user.email.isEmpty())){
+			$scope.errorMessage.push("Email shouldnt be Empty. ");
+		}else{
+			if((user.newEmail==null)||(user.newEmail.isEmpty())){
+				$scope.errorMessage.push("New email shouldnt be Empty. ");
+			}else if(!isEmail(user.newEmail)){
+				$scope.errorMessage.push("Not valid email");
+			}else if (user.newEmail!=user.confirmEmail){
+				$scope.errorMessage.push("Emails doesn't match. ");
+			}
+		}
+		if ((user.password==null)|| (user.password.isEmpty()) ){
+			$scope.errorMessage.push("Please put your password to submit changes. ");
+		}else{
+			if ((user.newPassword==null)||(user.newPassword.isEmpty())){
+				$scope.errorMessage.push("New password cant be empty. ");
+			}else if (user.newPassword!=user.confirmPassword){
+				$scope.errorMessage.push("Passwords doesn't match. ");
+			}
+		}
+		if ($scope.errorMessage.length==0){
+			console.log('send changes user');
+			$http.post('/updateUser',user).success(function(data) {
+				alert(data);
+			});
+		}
+	}
+	$scope.deleteAccount = function(){
+		$http.delete('/accountDelete/'+"hola");
+	}
+	String.prototype.isEmpty = function() {
+	    return (this.length === 0 || !this.trim());
+	};
+	function isEmail(email){
+		var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    	return re.test(email);	
+	}
 }]);

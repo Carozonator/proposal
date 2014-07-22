@@ -3,7 +3,6 @@ ProposalPage = mongoose.model('Proposalpage');
 /*
  * GET pages listing.
  */
-
 exports.list = function(req, res, next) {
   ProposalPage.find({ typeowner: req.user.email },{ _id: false },function(err,proposals){
     if (err) return next(err);
@@ -22,7 +21,6 @@ exports.delete = function(req,res){
 /*
  * POST to addmeme
  */
-
 exports.add = function(req, res, next) {
 
   ProposalPage.findOneAndUpdate(
@@ -35,11 +33,9 @@ exports.add = function(req, res, next) {
     res.status(200).send('Success!');
   });
 };
-
 /*
  * DELETE to deletememe
  */
-
 exports.deletememe = function(db) {
    return function(req, res) {
      var memeToDelete = req.body.id;

@@ -17,8 +17,8 @@ angular.module('app').factory('sessionService', ['$rootScope', '$window', '$http
         })
         .success(function(response) {
           // authentication OK
-          scope.currentUser = userInfo;
-          scope.isLoggedIn = true;
+          $rootScope.currentUser = userInfo;
+          $rootScope.isLoggedIn = true;
           $rootScope.user = userInfo.name;
           $rootScope.email = userInfo.email;
           $rootScope.$emit('session-changed');
@@ -42,15 +42,18 @@ angular.module('app').factory('sessionService', ['$rootScope', '$window', '$http
         $rootScope.usernameError = null;
         $rootScope.registerError = null;
         $http.post('/register', {
-          email: userInfo.email,
           password: userInfo.password,
           confirmPassword: userInfo.confirmPassword,
-          username: userInfo.username,
-          name: userInfo.name
+          name: userInfo.name,
+          lastname: userInfo.lastname,
+          email: userInfo.email,
+          confirmEmail: userInfo.confirmEmail,
+          companyName: userInfo.companyName,
+          companySize: userInfo.companySize
         })
         .success(function() {
-          scope.currentUser = userInfo;
-          scope.isLoggedIn = true;
+          $rootScope.currentUser = userInfo;
+          $rootScope.isLoggedIn = true;
           $rootScope.user = userInfo.name;
           $rootScope.email = userInfo.email;
           $rootScope.$emit('session-changed');
@@ -87,6 +90,7 @@ angular.module('app').factory('sessionService', ['$rootScope', '$window', '$http
         $rootScope.$emit('session-changed');
         $rootScope.user = userData.user;
         $rootScope.email = userData.email;
+        $rootScope.provider=userData.provider;
         if ($location.url() == "/") {
           $location.url('/hub');  
         }

@@ -1,0 +1,51 @@
+<link rel="stylesheet" href="stylesheets/settings.css">
+<div class="content-container">
+	<div class="libraryHeader">ACCOUNT SETTINGS</div>
+		<div class="row">
+			<div class="leftRowContainer">
+				<p>First Name</p>
+				<input ng-model='user.name' name='name'></input>
+			</div>
+			<div class="rightRowContainer">
+				<p>Last Name</p>
+				<input ng-model='user.lastname' name='lastname'></input>
+			</div>
+		</div>
+		<div class="row">
+			<div class="leftRowContainer">
+				<p>Email</p>
+				<input ng-model='user.email' name='email'></input>
+			</div>
+		</div>
+		<div class="row">
+			<div class="leftRowContainer">
+				<p>New Email</p>
+				<input ng-model='user.newEmail' name='newEmail'></input>
+			</div>
+			<div class="rightRowContainer">
+				<p>Confirm New Email</p>
+				<input ng-model='user.confirmEmail' name='confirmEmail'></input>
+			</div>
+		</div>
+		<div class="row">
+			<div class="leftRowContainer">
+				<p>Old Password</p>
+				<input ng-model='user.password' name='password'></input>
+			</div>
+		</div>
+		<div class="row">
+			<div class="leftRowContainer">
+				<p>New Password</p>
+				<input ng-model='user.newPassword' name='newPassword'></input>
+			</div>
+			<div class="rightRowContainer">
+				<p>Confirm New Password</p>
+				<input ng-model='user.confirmPassword' name='confirmPassword'></input>
+			</div>
+		</div>
+		<div><p ng-repeat="error in errorMessage">{{error}}</p></div>
+		<div class="row">
+			<button id="saveProp" ng-click='saveChanges()'>SAVE CHANGES</button>
+		</div>								
+	</div>
+</div>

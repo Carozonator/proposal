@@ -3,14 +3,13 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>BMS MEAN</title>
+	<title>BLK: Proposal Generator</title>
 	<meta name="description" content="BMS MEAN set up.">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- Place favicon.ico and apple-touch-icon(s) in the public directory -->
 	<link rel="stylesheet" href="stylesheets/main.css">
 	<link rel="stylesheet" href="stylesheets/spectrum.css">
 	<link rel="stylesheet" href="stylesheets/normalize.css">
-	<link rel="stylesheet" href="stylesheets/frontpage.css">
 	<link rel="stylesheet" href="stylesheets/jquery-ui-1.10.4.custom.min.css">
 	<link rel="stylesheet" href="stylesheets/chosen.css">
 	<link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic' rel='stylesheet' type='text/css'>
@@ -23,41 +22,50 @@
   <![endif]-->
 <div id="header-container" ng-controller="MainController">
 	<div id="betaImage"><img src="stylesheets/images/betaImage.png"/></div>
-	<div id="logo"><img src="stylesheets/images/logo.png"></div>
-	<div id="pageHeader">Proposal</br>Generator</br><span>Welcome, {{session.currentUser.name}}</span></div>
-	<div id="headerMenu">
-		<div ng-class="{currentHeader:($location.path()=='/hub')}"><a href="/#/hub">DASHBOARD</a></div>
-		<div ng-class="{currentHeader:($location.path()=='/pagebuilder')}"><a href="/#/pagebuilder">TEMPLATES</a></div>
-		<div ng-class="{currentHeader:($location.path()=='/create')}"><a href="/#/create">CREATION</a></div>
-		<div id="separator"></div>
-		<div id="logout"><font color="red"><a href="/logout">LOG OUT</a></font></div>
+	<div id="logo"><img src="stylesheets/images/logo-1.png"></div>
+	<div id="pageHeader">
+		<div style="float:none">
+			Proposal Generator
+		</div>
+		<div ng-show="currentUser!=null" style="float:none;margin-top: -6px; margin-left: 1px;">
+			<div >
+				<span>Welcome, {{currentUser.name}}.</span>
+			</div>
+			<div style="margin-top:3px;margin-left:5px">
+				<a href="/#/settings"><img style="width:15px"src="stylesheets/images/settings.png"/></a>
+			</div>
+		</div>
+		</div>
+	<div id="headerMenu" >
+		<div ng-show="isLoggedIn" ng-class="{currentHeader:($location.path()=='/hub')}"><a href="/#/hub">DASHBOARD</a></div>
+		<div ng-show="isLoggedIn" ng-class="{currentHeader:($location.path()=='/pagebuilder')}"><a href="/#/pagebuilder">MY PAGES</a></div>
+		<div ng-show="isLoggedIn" ng-class="{currentHeader:($location.path()=='/create')}"><a href="/#/create">EDITOR</a></div>
+		<div ng-show="isLoggedIn" id="separator">|</div>
+		<div ng-show="isLoggedIn" id="logout"><font color="red"><a href="/logout">LOG OUT</a></font></div>
+		<div id="helpIcon"><img src='stylesheets/images/helpIcon.png'/></div>
 	</div>
 </div>
-  <div ng-view></div>
-  
-
-
-  <script type="text/javascript" src="javascripts/dropzone.js"></script>
-  <script src="https://sdk.amazonaws.com/js/aws-sdk-2.0.0-rc.17.min.js"></script>
-  <script type="text/javascript" src="javascripts/jquery-1.10.2.js"></script>
-  <script type="text/javascript" src="javascripts/jquery-ui-1.10.4.custom.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
-  <script src="http://mozilla.github.io/pdf.js/build/pdf.js"></script>
-  <script type="text/javascript" src="javascripts/chosen.jquery.js"></script> 
-  <script type="text/javascript" src="javascripts/function.js"></script>
-  <script type="text/javascript" src="javascripts/spectrum.js"></script>
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-route.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular-animate.min.js"></script>
-  <script src="javascripts/angular-chosen/chosen.js"></script>
-  <script type="text/javascript" src="angular/sortable.js"></script>
-  <script type="text/javascript" src="angular/app.js"></script>
-  <script type="text/javascript" src="angular/directives.js"></script>
-  <script type="text/javascript" src="angular/controllers.js"></script>
-  <script type="text/javascript" src="angular/services.js"></script>
-
-  <script type="text/javascript">
-  window.user = <%- JSON.stringify(user) %>;
-  </script>
+	<div ng-view></div>
+	<script type="text/javascript" src="javascripts/dropzone.js"></script>
+	<script src="https://sdk.amazonaws.com/js/aws-sdk-2.0.0-rc.17.min.js"></script>
+	<script type="text/javascript" src="javascripts/jquery-1.10.2.js"></script>
+	<script type="text/javascript" src="javascripts/jquery-ui-1.10.4.custom.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
+	<script src="http://mozilla.github.io/pdf.js/build/pdf.js"></script>
+	<script type="text/javascript" src="javascripts/chosen.jquery.js"></script> 
+	<script type="text/javascript" src="javascripts/function.js"></script>
+	<script type="text/javascript" src="javascripts/spectrum.js"></script>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-route.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular-animate.min.js"></script>
+	<script src="javascripts/angular-chosen/chosen.js"></script>
+	<script type="text/javascript" src="angular/sortable.js"></script>
+	<script type="text/javascript" src="angular/app.js"></script>
+	<script type="text/javascript" src="angular/directives.js"></script>
+	<script type="text/javascript" src="angular/controllers.js"></script>
+	<script type="text/javascript" src="angular/services.js"></script>
+	<script type="text/javascript">
+	window.user = <%- JSON.stringify(user) %>;
+	</script>
 </body>
 </html>

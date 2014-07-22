@@ -1,13 +1,17 @@
 <link rel="stylesheet" href="stylesheets/hub.css">
 <div class="content-container">
-	<div class="libraryHeader">MY PROPOSALS</div>
+	<div class="libraryHeader">
+		MY PROPOSALS
+	</div>
+
 		<div class='proposalLibrary' ng-init="loadProposal()">
+			<a href="/#/pagebuilder"><div class="itemLibrary"><div class='createNew' style="height:{{canvasHeight}}px;">+</div><p class='createText'>Create New</p></div></a>
 			<div class='itemLibrary' 
 					ng-repeat="proposal in proposalList track by $index" 
 					proposal-directive='{{proposal.proposalname}}_{{session.currentUser.email}}.pdf'>
 				<canvas id="{{proposal.proposalname}}_{{session.currentUser.email}}.pdf" 
-				style="border:1px  solid black"
-				ng-click='loadinProposal(proposal._id,proposal.proposalname)'></canvas>
+						ng-class="{whiteItem:(proposal.propinfo.pages[0].background.color=='#ffffff')}"
+						ng-click='loadinProposal(proposal._id,proposal.proposalname)'></canvas>
 				<button class="delete" ng-click="removeProposal(proposal._id,proposal.proposalname)">X</button>
 				<p>  {{proposal.proposalname}}</p>
 			</div>

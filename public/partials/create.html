@@ -1,30 +1,12 @@
 <link rel="stylesheet" href="stylesheets/create.css">
-
 <div class="content-container">
 	<div class="left-container">
-		<div class="row">
-			<div ng-show="showFind == true" class="show-find">
-				<input type="text" placeholder="Find Text" ng-model="wordFind">
-				<input type="text" placeholder="Replace With" ng-model="wordReplace">
-				<button disabled>Replace One</button>
-				<button ng-click="replaceAll()">Replace All</button>
-			</div>
-		</div>
-		<div class="row topSelect">
-			<select chosen
-					ng-model="pageTypeName"
-			        data-placeholder="Pick one of these"
-			        disable-search="true" 
-					ng-options="page.typename for page in pageTypes">
-					<option value=""></option>
-			</select>
-			<div class="add-page-button" ng-click="addPage()">ADD PAGE +</div> {{pageError}}
-		</div>
+		<div class="row errorMessage" ng-show="pageError">Add a Page or Create a New One <a href="/#/pagebuilder">here</a></div>
 		<div class="row pages">
-			<div class="pages-container" ng-model="propInfo.pages">
+			<div class="pages-container" >
 				<section ng-repeat="page in propInfo.pages track by $index" 
-						class="page" 
-						ng-show="$index===currentPage">
+						 class="page" 
+						 ng-show="$index===currentPage">
 					<div class="pageHeader elementContainer">
 						<span>Page {{currentPage+1}}:{{page.typename}}</span>
 						<button class="delete" ng-click="deletePage($index)">DELETE PAGE X</button>
@@ -34,23 +16,41 @@
 							<div>
 								<ui-colorpicker ng-model="page.pagesetup.header.settings.color"></ui-colorpicker>
 								<font>Header</br>Color</font>
-								image:<input type="checkbox" ng-model="page.pagesetup.header.settings.image"/>
 							</div>
-							<div id="dropzone" ng-click="updateImage($index,0,'header')" dropzone="dropzoneConfig" 
+							<div class="imageContainer">
+								Image
+								<input id="header_{{$index}}_{{currentPage}}_{{page.typename}}" type="checkbox" ng-model="page.pagesetup.header.settings.image"//>
+								<label for="header_{{$index}}_{{currentPage}}_{{page.typename}}" ></label>
+							</div>
+							<div id="dropzone" ng-click="updateImage(0,$index,'header')" dropzone="dropzoneConfig" 
 									ng-show="page.pagesetup.header.settings.image">
 							</div>     
 						</div>
 						<div class="insiderColor">
-							<ui-colorpicker ng-model="page.background.color"></ui-colorpicker><font>Background </br>Color</font>
+							<div>
+								<ui-colorpicker ng-model="propInfo.pages[$index].background.color"></ui-colorpicker><font>Background </br>Color</font>
+							</div>
+							<div class="imageContainer">
+								Image
+								<input id="bg_{{$index}}_{{currentPage}}_{{page.typename}}" type="checkbox" ng-model="page.background.image"//>
+								<label for="bg_{{$index}}_{{currentPage}}_{{page.typename}}" ></label>
+							</div>
+							<div id="dropzone" ng-click="updateImage(0,$index,'background')" dropzone="dropzoneConfig" 
+									ng-show="page.background.image">
+							</div>   
 						</div>  
 						<div class="insiderColor" ng-show="page.pagesetup.footer.exists">
 							<div>
 								<ui-colorpicker ng-model="page.pagesetup.footer.settings.color"></ui-colorpicker>
 								<font>Footer</br>Color</font>
-								image:<input type="checkbox" ng-model="page.pagesetup.footer.settings.image"/>
+							</div>
+							<div class="imageContainer">
+								Image
+								<input id="footer_{{$index}}_{{currentPage}}_{{page.typename}}" type="checkbox" ng-model="page.pagesetup.footer.settings.image"//>
+								<label for="footer_{{$index}}_{{currentPage}}_{{page.typename}}" ></label>
 							</div>
 							<div id="dropzone" dropzone="dropzoneConfig" ng-show="page.pagesetup.footer.settings.image"
-							ng-click="updateImage($index,0,'footer')">
+							ng-click="updateImage(0,$index,'footer')">
 							</div>
 						</div>
 					</div>
@@ -59,14 +59,14 @@
 						<div class="textEditor">
 							<div class="elem">
 								<font class="smallFont" 
-									  ng-click="head.settings.size=10"
-									  ng-class="{elemSelected:(head.settings.size==10)}">hi</font>
-								<font class="mediumFont" 
-									  ng-click="head.settings.size=12"
-									  ng-class="{elemSelected:(head.settings.size==12)}">hi</font>
-								<font class="largeFont" 
 									  ng-click="head.settings.size=14"
-									  ng-class="{elemSelected:(head.settings.size==14)}"> hi</font>
+									  ng-class="{elemSelected:(head.settings.size==14)}">hi</font>
+								<font class="mediumFont" 
+									  ng-click="head.settings.size=18"
+									  ng-class="{elemSelected:(head.settings.size==18)}">hi</font>
+								<font class="largeFont" 
+									  ng-click="head.settings.size=22"
+									  ng-class="{elemSelected:(head.settings.size==22)}"> hi</font>
 							</div>
 							<div class="elem">
 								<font class="boldFont" 
@@ -82,13 +82,11 @@
 							<div class="elem"><ui-colorpicker ng-model="head.settings.color"></ui-colorpicker>
 							</div>
 							<div class="selectorEditor"> 
-								<select chosen disable-search="true" 
+								<select chosen 
 										disable-search="true"
-        								data-placeholder="{{head.settings.font}}"
-										ng-model="head.settings.font">
-									<option selected value="Times-Roman">Times-Roman</option>
-									<option value="Helvetica">Helvetica</option>
-									<option value="Courier">Courier</option>
+        								ng-model="head.settings.font"
+        								ng-options="fontName for fontName in fonts"
+										>
 									<option value=""></option>
 								</select>
 							</div>
@@ -123,13 +121,11 @@
 							<div class="elem"><ui-colorpicker ng-model="textbody.settings.color"></ui-colorpicker>
 							</div>
 							<div class="selectorEditor"> 
-								<select chosen disable-search="true" 
+								<select chosen 
 										disable-search="true"
-        								data-placeholder="{{textbody.settings.font}}"
-										ng-model="textbody.settings.font">
-									<option selected value="Times-Roman">Times-Roman</option>
-									<option value="Helvetica">Helvetica</option>
-									<option value="Courier">Courier</option>
+        								ng-model="textbody.settings.font"
+        								ng-options="fontName for fontName in fonts"
+										>
 									<option value=""></option>
 								</select>
 							</div>
@@ -145,9 +141,8 @@
 					</div>
 					<div ng-repeat="etc in page.pagesetup.etc" class="elementContainer">
 						<div ng-show="etc.assettype == 'table'">
-
 							<div class="elementHeader">TABLE {{$index+1}}</div>
-							<div class="textEditor">
+							<div class="textEditor tableEditor">
 								<div class="elem">
 									<font class="boldFont" 
 										  ng-click="etc.settings.bold=!etc.settings.bold"
@@ -159,18 +154,13 @@
 								<div class="elem"><ui-colorpicker ng-model="etc.settings.color"></ui-colorpicker>
 								</div>
 								<div class="selectorEditor"> 
-									<select chosen disable-search="true" 
-											disable-search="true"
-	        								data-placeholder="{{etc.settings.font}}"
-											ng-model="etc.settings.font">
-										<option selected value="Times-Roman">Times-Roman</option>
-										<option value="Helvetica">Helvetica</option>
-										<option value="Courier">Courier</option>
+									<select chosen 
+										disable-search="true"
+        								ng-model="etc.settings.font"
+        								ng-options="fontName for fontName in fonts">
 										<option value=""></option>
 									</select>
 								</div>
-							</div>
-							<div class="inputRowsCols">
 								<div class="input-number">
 									<div class="leftInputNumber">
 										<input type="text" class="table-title" ng-model="etc.settings.rows" ng-change="updateTable(etc.settings.columns,etc.settings.rows,$index,$parent.$index)"/> 
@@ -181,7 +171,6 @@
 									</div>
 								</div>
 								<div class="colrow"><font>Rows{{count}}</font></div>
-
 								<div class="input-number" style="margin-left:20px;">
 									<div class="leftInputNumber">
 										<input 	type="text" 
@@ -200,10 +189,11 @@
 									<div class="borderInsider">
 										<font>Border</font>
 									</div>
-									<div class="borderInsider">
-										<input type="checkbox" ng-model="etc.settings.borderexists"/>
+									<div class="borderInsider checkbox">
+										<input id="table_{{$index}}_{{currentPage}}_{{page.typename}}" type="checkbox" ng-model="etc.settings.borderexists"/>
+										<label for="table_{{$index}}_{{currentPage}}_{{page.typename}}"></label>
 									</div>
-									<div class="borderInsider">
+									<div class="borderInsider elem colorSelector">
 										<ui-colorpicker ng-show="etc.settings.borderexists" ng-model="etc.settings.bordercolor"></ui-colorpicker>
 									</div>
 								</div>
@@ -228,10 +218,11 @@
 							<div class="elementHeader">PRICING TABLE {{$index+1}}</div>
 							<div class="pricingEditor">
 								<ui-colorpicker ng-model="etc.settings.color"></ui-colorpicker>
-								<select chosen disable-search="true" ng-model="etc.settings.font">
-									<option value="Times-Roman">Times-Roman</option>
-									<option value="Helvetica">Helvetica</option>
-									<option value="Courier">Courier</option>
+								<select chosen 
+										disable-search="true"
+        								ng-model="etc.settings.font"
+        								ng-options="fontName for fontName in fonts">
+										<option value=""></option>
 								</select>
 							</div>
 							<div class="add-package" ng-click="addPackage($parent.$index,$index)">ADD PACKAGE +</div>
@@ -253,10 +244,23 @@
 									</div>
 								</div>
 								<div class="pricingHeader">
-										<input type="checkbox" ng-model="etc.settings.existsDiscount"/>
-										$ <input type="text" ng-model="etc.settings.discount" ng-show="etc.settings.existsDiscount"/>
-									<input type="checkbox" ng-model="etc.settings.existsTax"/>
-									% <input type="text" ng-model="etc.settings.tax" ng-show="etc.settings.existsTax"/>
+									<div class="disTax" ng-show="$index==0">
+										<div><div>
+											<span>discount($)</span>
+											</div>
+											<div>
+											<input id="saveProp-name" type="text" ng-model="etc.settings.discount"/>
+											</div>
+										</div>
+										<div>
+											<div>
+												<span>tax(%)</span>
+											</div>
+											<div>
+												<input id="saveProp-name" type="text" ng-model="etc.settings.tax"/>
+											</div>
+										</div>
+									</div>
 								</div>
 								<div class="subservice" ng-repeat="subservice in package.pservice track by $index">
 									<input type="text" class="subservice-name" ng-model="subservice.text">
@@ -270,31 +274,41 @@
 			</div>
 		</div>
 	</div>
-	<div class="right-container">
-		
-		<iframe id="preview" seamless></iframe>
+	<div class="right-container">	
+		<iframe id="preview" seamless ng-show="previewShow"></iframe>
 	</div>
 	<div id="bottomMenu">
 		<div id="pageDirectory">
-			<div ng-click="previousPage(propInfo.pages.length)" >< </div> 
-			<div ng-show="beginDots">...</div>
-			<div ng-repeat="pageNumber in range(5) track by $index">
+			<div ng-click="previousPage(propInfo.pages.length)" style="margin-right:4%;">< </div> 
+			<div ng-show="beginDots">&nbsp;.&nbsp;.&nbsp;.&nbsp;</div>
+			<div ng-repeat="pageNumber in range(5) track by $index" class="numberIndex">
 				<div ng-click="selectPage($index+shift)" 
 					 ng-show="$index<propInfo.pages.length"
 					 ng-class="{pageActive:($index+shift)==currentPage}">{{$index+shift+1}}</div>
 				<div ng-click="selectPage($index+shift)" ng-show="$index>=propInfo.pages.length">.</div>
 			</div>
-			<div ng-show="endDots">...</div>
+			<div ng-show="endDots"  style="margin-left:-8%;">&nbsp;.&nbsp;.&nbsp;.&nbsp;</div>
 			<div ng-click="nextPage(propInfo.pages.length)" ng-init="currentPage=0"> > </div>	
+		</div>
+		<div id="selectPage">
+			<select chosen
+					ng-model="pageTypeName"
+			        data-placeholder="Select a Page"
+			        disable-search="true" 
+					ng-options="page.typename for page in pageTypes">
+					<option value=""></option>
+			</select>
+			<span class="add-page-button" ng-click="addPage()">+</span>
 		</div>
 		<div id="generateButton">
 			<button id="generate" ng-click="genProposal()">UPDATE PREVIEW</button>
 		</div>
 		<div id="saveMenu">
-			<button id="saveProp" ng-click="saveProposal()">Save</button>
+			<button id="saveProp" ng-click="saveProposal()">SAVE</button>
 			<input id="saveProp-name" type="text" placeholder="name" ng-model="propSaveName">
 			<div class="saveConfirm"><p>{{saveConfirm}}</p></div>
 		</div>
+		<div class='download-pdf'><a href="/pdf/{{pdfFile}}" download="{{pdfFile}}">Download as PDF</a></div>
 	</div>
 </div>
 <script src='https://ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular.min.js'></script>

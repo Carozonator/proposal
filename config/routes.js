@@ -19,9 +19,11 @@ module.exports = function (app, passport) {
     app.post('/login', passport.authenticate('local'), function(req,res){
         res.send({
             user: req.user,
-            redirect: req.get('referer')
+            redirect: req.get('referer')+"#/hub"
         });
     });
+    app.post('/updateUser',users.updateUser);
+    app.delete('/accountDelete/:email',users.deleteAccount);
     // Facebook authentication
     app.get('/auth/facebook', passport.authenticate('facebook',{scope:['email','user_about_me']}), users.signin);
     app.get('/auth/facebook/callback', passport.authenticate('facebook', { successRedirect: '/auth/success', failureRedirect: '/login' }), users.authCallback);

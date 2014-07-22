@@ -1,9 +1,6 @@
 'use strict';
-
 var app = angular.module('app');
-
 /* Directives */
-
 app.directive('dropzone', function () {
 
 	return function (scope, element, attrs) {
@@ -69,7 +66,6 @@ elm.on('dragstop', function(event, ui){
 		var yfix = "scope.pagePreview.pagesetup." + section + "[" + index + "]" + ".settings.ypos = " + newtop;
 		var xfix = "scope.pagePreview.pagesetup." + section + "[" + index + "]" + ".settings.xpos = " + newleft;
 	}
-	console.log(scope.previewPageML);
 	eval(yfix);
 	eval(xfix);
 	scope.$apply();
@@ -106,7 +102,6 @@ app.directive('uiColorpicker', function() {
 					});
 				}
 			}, scope.$eval(attrs.options));
-
 			ngModel.$render = function() {
 				input.spectrum('set', ngModel.$viewValue || '');
 			};
@@ -115,21 +110,22 @@ app.directive('uiColorpicker', function() {
 		}
 	};
 });
-
-app.directive('proposalDirective',function(){
+app.directive('proposalDirective',function($rootScope){
 	return{
 		restrict: 'A',
 		link:function(scope,elem,attrs){
 			var url="pdf/"+attrs.proposalDirective;
 			PDFJS.getDocument(url).then(function getFirst(pdf) {
 				pdf.getPage(1).then(function getPageFirst(page) {
-					var scale = 0.05;
+					var scale = 0.5;
 					var viewport = page.getViewport(scale);
 					var canvas = document.getElementById(attrs.proposalDirective);
 					var context = canvas.getContext('2d');
 					canvas.height = viewport.height;
 					canvas.width = viewport.width;
 					page.render({canvasContext: context, viewport: viewport});
+					$rootScope.canvasHeight=elem.find("canvas").height();
+					$rootScope.$apply();
 				});
 			});
 		}

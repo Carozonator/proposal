@@ -17,7 +17,8 @@
     "passport-local-mongoose": "*",
     "connect-mongo": "*",
     "crypto": "*",
-    "pdfkit": "*"
+    "pdfkit": "*",
+    "mandrill-api":"*"
   },
   "description": "Proposal Page",
   "main": "app.js",

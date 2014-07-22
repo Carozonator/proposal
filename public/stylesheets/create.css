@@ -1,10 +1,26 @@
 /* General CSS */
+input[type=checkbox]{
+	display: none;
+}
 
-* {
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-	font-family: 'Lato', sans-serif;
+input[type=checkbox] + label{
+	display: inline-block;
+	width: 15px;
+	height: 15px;
+	padding-left: 20px;
+	background-position: 0 0;
+	background-repeat: no-repeat;
+	line-height: 15px;
+	cursor: pointer;
+}
+
+input[type=checkbox]:checked + label{
+	background-position: left -15px;
+}
+
+label{
+	background-image:url("images/checkboxes.png"); 
+	background-size:15px;
 }
 
 .colrow{
@@ -29,16 +45,17 @@
 	float:left;
 }
 .borderSelector{
-	left: 40px;
-	position: relative;
+	float:left;
 	font-size:12px;
+	margin-left:15px;
+	padding-left:15px;
+	border-left: solid 1px rgb(99,99,99);
 }
 .borderSelector font{
 	vertical-align:-webkit-baseline-middle;
 }
 .borderSelector .borderInsider{
 	float:left;
-	margin-left: 15px;
 }
 .borderInsider input[type='checkbox']{
 	width:8px !important;
@@ -81,40 +98,7 @@
 .topSelect .chosen-container{
 width:100% !important;
 }
-#logo img{
-	height:60px;
-	margin:auto;
-}
-#pageHeader{
-	margin-top:20px;
-	margin-left:15px;
-	font-size:16px;
-}
 
-#pageHeader span{
-	font-size:13px;
-}
-#headerMenu{
-	position:relative;
-	left:20%;
-}
-#headerMenu div{
-	background-color:white;
-	color:black;
-	margin-left: 1px;
-	height: 80%;
-	padding-top: 33px;
-	padding-left: 10px;
-	padding-right: 10px;
-	cursor:pointer;
-}
-#headerMenu .currentHeader{
-	background-color:rgb(0,167,183);
-	color:white;
-}
-#headerMenu #separator{
-	font-size:20px;
-}
 .row {
 	width:100%;
 	margin:5px 0px;
@@ -161,7 +145,8 @@ width:100% !important;
 
 .pages-container {
 	width:100%;
-	height:400px;
+	height:450px;
+	margin-top:20px;
 	overflow-y: scroll;
 	padding:0;
 	overflow-x: hidden;
@@ -186,6 +171,10 @@ iframe{
 
 .page input[type=checkbox] {
 	width:5%;
+	border:none !important;
+	color:rgb(37,37,37);
+	text-align: center;
+
 }
 
 .right-container iframe {
@@ -457,13 +446,20 @@ pre{
 }
 
 #generate,#saveProp{
-	background-color:rgb(132,204,156);
+	background-color:rgb(255,140,40);
 	color:white;
 	height:30px;
-	font-weight: 100;
 	border:none;
+	color:rgb(102,102,102);
+	border-radius:2px;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+#generate:hover,#saveProp:hover{
+	
 }
 #saveProp{
+	width:60px;
 	float:right;
 	width:23%;
 }
@@ -499,12 +495,9 @@ textarea:focus {
 }
 
 #dropzone{
-	border-color:rgb(225,225,225);
+	border:dashed 1px rgb(225,225,225);
 	background-color:white;
-	border-width:2px;
-	border-style:dashed;
 	height:150px;
-	width:100%;
 	background-image: url("images/imageArrow.png");
 	background-size: 100px;
 	background-repeat: no-repeat;
@@ -524,7 +517,8 @@ textarea:focus {
 	display:none;
 }
 .dz-details {
-	width:100%;
+	width:0px;
+	height:1px;
 	left: 105%;
 	position: relative;
 	top: 5px;
@@ -549,7 +543,7 @@ textarea:focus {
 }
 .colorOption{
 	margin-top:10px;
-	font-size: 12px;
+	font-size: 13px;
 }
 .colorOption .insiderColor{
 	float:left;
@@ -557,19 +551,36 @@ textarea:focus {
 }
 .colorOption .insiderColor span{
 	margin-right:10px;
+	padding-top:8px;
 }
 .colorOption #dropzone{
-	height:100px;
+	height:60px;
+	width:60px;
+	background-size: 40px;
+	background-image:url("images/imageArrow.png");
 }
 .colorOption #dropzone img{
-	height:60px;
-	
-	margin-left:10px;
+	display:block;
+	float:left;
+	height:33px;
+	margin-left:0px;
 }
 .colorOption #dropzone span{
-	margin-left: 10px;
+	margin-left: 0px;
 	margin-bottom:3px;
-	font-size: 10px;
+	font-size: 8px;
+	white-space: nowrap;
+}
+
+.colorOption .dz-details .dz-filename{
+	margin-bottom: 0px;
+}
+.colorOption .dz-details {
+	width:0px;
+	height:1px;
+	left: 105%;
+	position: relative;
+	top: 5px;
 }
 .colorOption span{
 	float:left;
@@ -632,25 +643,24 @@ textarea:focus {
 	float:inherit;
 	font-size:11px;
 }
-.pageActive{
-	color:rgb(0,167,185);
-}
 #pageDirectory{
 	color:rgb(102,102,102);
-	margin-left:3%;
 }
 #pageDirectory div{
-	margin-left:10px;
 	cursor:pointer;
+	height: 18px;
+	font-size: 15px;
+	text-align: center;
 }
-#saveMenu{
-	margin-right:5%;
+#bottomMenu{
+	margin-left: 5%;
+	margin-right: 5%;
 }
 #bottomMenu div{
 	float:left;
 }
-#generateButton, #saveMenu, #pageDirectory{
-	width:30%;
+#generateButton, #saveMenu, #pageDirectory,#selectPage{
+	width:25%;
 	margin-top:-20px;
 	padding-top: 20px;
 	border-top-width:1px;
@@ -679,6 +689,29 @@ textarea:focus {
 .pricingHeader p {
 	margin-bottom: 2px;
 	margin-top: 2px;
+}
+.pricingHeader .disTax{
+	width:20%;
+	float:right;
+}
+.disTax span{
+	font-size:9px;
+}
+.disTax div{
+	float:none;
+	height:20px;
+	width:100%;
+}
+.disTax #saveProp-name{
+	width:100%;
+	height:15px;
+	font-size:10px;
+}
+.disTax div div{
+	float:left;
+	width:40%;
+	word-wrap:break-word;
+	white-space:nowrap;
 }
 .add-subservice, .add-package{
 	background-color:none !important;
@@ -709,16 +742,78 @@ textarea:focus {
 .sp-container{
 	background-color:white;
 }
-::-webkit-scrollbar {
-    width: 10px;
-    background-color:rgb(225,225,225);
+.errorMessage{
+	color:red;
 }
- 
-::-webkit-scrollbar-track {
-    border-radius: 0px;
+.imageContainer{
+	margin-left:53px;
+	margin-top:6px;
+	font-size:11px;
 }
- 
-::-webkit-scrollbar-thumb {
-    border-radius: 0px;
-    background-color:rgb(194,194,194);
+.tableEditor{
+	background-color:red;
+}
+.tableEditor{
+	margin-right:2%;
+}
+.tableEditor .selectorEditor{
+	float:left;
+}
+.checkbox{
+	height: 15px;
+	width: 15px;
+	margin-top: 3px;
+	margin-left: 5px;
+	margin-right:5px;
+}
+.colorSelector{
+	margin-right:0px !important;
+	border:none !important;
+	padding:0 !important;
+}
+.tableEditor .selectorEditor{
+	padding-left:0px;
+	border-right:solid 1px rgb(99,99,99);
+	margin-right: 20px;
+	height: 20px;
+	font-size:10px !important;
+}
+.tableEditor .selectorEditor .chosen-container{
+	font-size:10px;
+}
+.download-pdf{
+	float: right !important;
+	margin-right: 20%;
+	margin-top: 5px;
+}
+.sp-button-container{
+	visibility:hidden;
+}
+
+.pageActive{
+	background-color: rgb(0,167,183);
+	color: white;
+	border-radius: 50%;
+	height: 25px !important;
+	width:100% !important;
+	top: -2px;
+	padding-top: 3px;
+	position: relative;
+	margin-left: -36%;
+}
+.numberIndex{
+	width:10%;
+	text-align:center;
+}
+#selectPage .chosen-single,#selectPage .chosen-default{
+	height:30px !important;
+}
+#selectPage .chosen-single span, #selectPage .chosen-default span{ 
+	height:30px !important;
+}
+#selectPage .chosen-single{
+	border-radius:2px;
+}
+#selectPage .chosen-container{
+	width: 80% !important;
 }

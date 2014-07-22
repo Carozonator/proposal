@@ -1,5 +1,4 @@
 /* General CSS */
-
 .content-container {
 	/*min-width:1000px;*/
 	box-shadow: 0 0 20px 10px rgb(213,213,213);
@@ -31,6 +30,14 @@
 	margin: 0;
 	margin-top: 50px;
 }
+.pagesTitle{
+	font-style:italic;
+	margin-top: 20px;
+	font-size: 18px;
+	color: rgb(85,85,85);
+	padding-bottom: 5px;
+	border-bottom: rgb(85,85,85) 1px solid;
+}
 
 .pages-container {
 	width:100%;
@@ -43,14 +50,22 @@
 	border:1px solid rgb(192,192,192);
 	background-color:white;
 	position:absolute;
+	padding:5px;
+	color:rgb(126,126,126);
 }
-
+.page-element .delete{
+	color:rgb(185,185,185);
+}
 .page {
 	width:100%;
 	height:20px;
 	margin-top:30px;
 	font-size:16px;
 	color:rgb(85,85,85);
+}
+.page .delete{
+	float:left !important;
+	margin-right:10px;
 }
 .page p{
 	margin:0;
@@ -63,11 +78,10 @@
 	width:5%;
 }
 .page-title{
+	left: 15%;
 	top: -40px;
 	position: relative;
 	height: 0;
-	font-weight:100;
-	font-style: italic;
 	font-size:20px;
 	color:rgb(85,85,85);
 }
@@ -107,6 +121,20 @@
 	height:100%;
 	float:left;
 }
+.page-preview-controls div{
+	color: rgb(85,85,85);
+	cursor: pointer;
+	text-align: right;
+	padding-right: 8%;
+	padding-bottom: 10px;
+}
+.page-preview-controls div:hover{
+	color:rgb(255,126,0);
+}
+.page-preview-controls font{
+	color:rgb(0,167,183);
+	margin-left:5px;
+}
 
 .page-preview-page {
 	border:solid 2px rgb(192,192,192);
@@ -115,6 +143,11 @@
 	width:100%;
 	height:100%;
 	background-color:rgb(215,215,215);
+}
+
+.page-preview-page img{
+	width:100%;
+	height:100%;
 }
 
 .background-placeholder {
@@ -338,15 +371,35 @@ canvas{
 }
 
 #saveContainer{
+	width:100%;
+}
+#saveContainer #refresh{
+	cursor:pointer;
+	float:left;
+	color:rgb(89,89,89);
+	font-size:13px;
+	margin-top:14px;
+}
+#saveContainer #refresh div{
+	float:left;
+}
+#saveContainer #refresh #fresh{
+	margin-top:8px;
+	padding-left:8px;
+}
+#saveContainer #save{
 	float:right;
 }
 #saveProp{
-	background-color:rgb(132,204,156);
+	background-color:rgb(255,140,40);
 	color:white;
 	height:30px;
-	font-weight: 100;
 	border:none;
-	width:60px;
+	color:rgb(102,102,102);
+	border-radius:2px;
+	padding-left: 15px;
+	padding-right: 15px;
+	width:80px;
 }
 
 #saveProp-name {
@@ -481,16 +534,9 @@ button{
 	width: 100%;
 	font-weight: 200;
 }
-::-webkit-scrollbar {
-    width: 10px;
-    background-color:rgb(225,225,225);
-}
- 
-::-webkit-scrollbar-track {
-    border-radius: 0px;
-}
- 
-::-webkit-scrollbar-thumb {
-    border-radius: 0px;
-    background-color:rgb(194,194,194);
+.templateInstruction{
+	padding:5%;
+	font-size:16px;
+	color:rgb(136,136,136);
+	padding-left:0;
 }

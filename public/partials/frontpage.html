@@ -1,25 +1,81 @@
-<button ng-show="session.isLoggedIn" ng-click="session.logout()">Logout</button>
-<div ng-controller="registrationCtrl" ng-hide="session.isLoggedIn">
-  <form ng-submit="session.register(userInfo)">
-    <input type="text" name="name" ng-model="userInfo.name" placeholder="Name">
-    <input type="text" name="username" ng-model="userInfo.username" placeholder="Username">
-    <input type="text" name="email" ng-model="userInfo.email" placeholder="Email">
-    <input type="password" name="password" ng-model="userInfo.password" placeholder="Password">
-    <input type="password" name="confirmPassword" ng-model="userInfo.confirmPassword" placeholder="Password Repeat">
-    <button type="submit">Sign Up</button>
-  </form>
-  <div>
-  <p>{{registerError}}</p>
-  </div>
+<link rel="stylesheet" href="stylesheets/frontpage.css">
+<div class="content-container" ng-hide="session.isLoggedIn">
+	<div ng-controller="registrationCtrl" class="register-container" ng-show="showRegistration">
+		<form ng-submit="session.register(userInfo)">
+			<div class="row login-title"><p>COUNT ME IN</p><span ng-click="showLogin()">Log In</span></div>
+			<div class="row">
+				<div class="leftRowContainer">
+					<input type="text" name="name" ng-model="userInfo.name" placeholder="first name" tabindex=1>
+				</div>
+				<div class="rightRowContainer">
+					<input type="password" name="password" ng-model="userInfo.password" placeholder="password" tabindex=3>
+				</div>
+			</div>
+			<div class="row">
+				<div class="leftRowContainer">
+					<input type="text" name="lastname" ng-model="userInfo.lastname" placeholder="last name" tabindex=2>
+				</div>
+				<div class="rightRowContainer">
+					<input type="password" name="confirmPassword" ng-model="userInfo.confirmPassword" placeholder="retype password" tabindex=4>
+				</div>
+			</div>
+			<div class="row">
+				<div class="leftRowContainer">
+					<input type="text" name="email" ng-model="userInfo.email" placeholder="email" tabindex=5>
+				</div>
+				<div class="rightRowContainer">
+					<input type="text" name="companyName" ng-model="userInfo.companyName" placeholder="company name" tabindex=7>
+				</div>
+			</div>
+			<div class="row">
+				<div class="leftRowContainer">
+					<input type="text" name="email" ng-model="userInfo.confirmEmail" placeholder="confirm email" tabindex=6>
+				</div>
+				<div class="rightRowContainer">
+						<select chosen tabindex=8
+										name="companySize"
+										disable-search="true"
+										data-placeholder="COMPANY SIZE"
+        								ng-model="userInfo.companySize"
+        								ng-options="size for size in companySizes"
+										>
+									<option value=""></option>
+						</select>
+				</div>
+			</div>
+			<p>{{registerError}}</p>
+			<div class="row">
+				<div class="semiLeft">
+					<button type="submit">REGISTER</button>
+				</div>
+			</div>
+			<div class="row">{{userInfo}}</div>
+		</form>
+	</div>
+	<div ng-controller="loginCtrl" class="login-container" ng-show="showLogin" >
+		<form ng-submit="session.login(userInfo)">
+			<div class="row login-title">WELCOME BACK</div>
+			<div class="row">
+				<p>Email</p>
+				<input type="text" name="email" ng-model="userInfo.email" placeholder="Email">
+			</div>
+			<div class="row">
+				<p>Password</p>
+				<input type="password" name="password" ng-model="userInfo.password" placeholder="Password">
+			</div>
+			<div class="row">
+				<p class="password">Forgot Password</p>
+			</div>
+			<div class="row">
+				<button type="submit">LOGIN</button>
+			</div>
+			<div class="row error">
+				<p>{{loginError}}</p>
+			</div>
+		</form>
+	</div>
 </div>
-<div ng-controller="loginCtrl" ng-hide="session.isLoggedIn">
-  <form ng-submit="session.login(userInfo)">
-    <input type="text" name="email" ng-model="userInfo.email" placeholder="Email">
-    <input type="password" name="password" ng-model="userInfo.password" placeholder="Password">
-    <button type="submit">Login</button>
-  </form>
-</div>
-<div>
-  <p>{{loginError}}</p>
-</div>
+
+<!--
 <button ng-hide="session.isLoggedIn" ng-click="session.facebookLogin()">Facebook Login</button>
+-->

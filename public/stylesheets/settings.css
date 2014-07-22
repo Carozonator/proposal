@@ -1,0 +1,61 @@
+.content-container {
+	/*min-width:1000px;*/
+	box-shadow: 0 0 20px 10px rgb(213,213,213);
+	float:left;
+	width: 90%;
+	margin-left: 5%;
+	margin-right: 5%;
+	background-color:white;
+	height:620px;
+	margin-top:20px;
+	padding-top:30px;
+}
+.libraryHeader{
+	border-bottom:1px solid rgb(135,135,135);
+	margin-left: 5%;
+	margin-right: 5%;
+	padding-bottom: 5px;
+	font-size: 20px;
+	color: rgb(135,135,135);
+	font-family:Lato;
+}
+.row{
+	width:60%;
+	float:left;
+	margin-left:5%;
+	margin-top:20px;
+	color:rgb(89,89,89);
+	font-size:16px;
+}
+.row input{
+	width:100%;
+	margin-top:10px;
+	border:none;
+	border:solid 1px rgb(149,149,149);
+	border-bottom-color:rgb(201,201,201);
+}
+.row p{
+	margin:0;
+	padding:0;
+}
+.leftRowContainer{
+	float:left;
+	width:50%;
+	padding-right:1%;
+}
+.rightRowContainer{
+	float:right;
+	width:50%;
+	padding-left:1%;
+}
+#saveProp{
+	margin-top:100px;
+	background-color:rgb(255,140,40);
+	color:white;
+	height:30px;
+	border:none;
+	color:rgb(102,102,102);
+	border-radius:2px;
+	padding-left: 15px;
+	padding-right: 15px;
+}

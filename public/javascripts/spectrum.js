@@ -353,6 +353,7 @@
             }, dragStart, dragStop);
 
             draggable(dragger, function (dragX, dragY, e) {
+                	
 
                 // shift+drag should snap the movement to either the x or y axis.
                 if (!e.shiftKey) {
@@ -517,6 +518,11 @@
         function dragStop() {
             container.removeClass(draggingClass);
             boundElement.trigger('dragstop.spectrum', [ get() ]);
+
+                if (isValid()) {
+                    updateOriginalInput(true);
+                    hide();
+                }
         }
 
         function setFromTextInput() {

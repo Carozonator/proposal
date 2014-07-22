@@ -24,6 +24,10 @@ config(['$routeProvider', function($routeProvider) {
     templateUrl: 'partials/pagemaker.html',
     controller: 'builderCtrl'
   });
+  $routeProvider.when('/settings', {
+  	templateUrl: 'partials/settings.html', 
+  	controller: 'settingsController'
+  });
   $routeProvider.otherwise({redirectTo: '/'});
 }]).run(['$rootScope', '$window', 'sessionService',
 function ($rootScope, $window, sessionService) {

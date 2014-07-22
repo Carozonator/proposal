@@ -3,23 +3,40 @@ Schema = mongoose.Schema,
 crypto = require('crypto');
 
 var UserSchema = new Schema({
-  name: {
-    type: String,
-    required: true
-  },
-  email: String,
-  username: {
-    type: String,
-    unique: true
-  },
-  roles: {
-    type: Array,
-    default: ['authenticated']
-  },
-  hashed_password: String,
-  provider: String,
-  salt: String,
-  facebook: {}
+							name: {
+								type: String,
+								required: true
+							},
+							lastname: {
+								type: String,
+								required: true
+							},
+							email: {
+								type: String,
+								required:true,
+								unique: true
+							},
+							username:{
+								type:String,
+								required:true,
+								unique:true
+							},
+							companyName: {
+								type: String,
+								required: true
+							},
+							companySize: {
+								type: String,
+								required: true
+							},
+							roles: {
+								type: Array,
+								default: ['authenticated']
+							},
+							hashed_password: String,
+							provider: String,
+							salt: String,
+							facebook: {}
 });
 
 UserSchema.virtual('password').set(function(password) {
@@ -44,10 +61,20 @@ UserSchema.path('email').validate(function(email) {
   return (typeof email === 'string' && email.length > 0);
 }, 'Email cannot be blank');
 
-UserSchema.path('username').validate(function(username) {
+UserSchema.path('lastname').validate(function(lastname) {
   if (!this.provider) return true;
-  return (typeof username === 'string' && username.length > 0);
-}, 'Username cannot be blank');
+  return (typeof lastname === 'string' && lastname.length > 0);
+}, 'Lastname cannot be blank');
+
+UserSchema.path('companyName').validate(function(companyName) {
+  if (!this.provider) return true;
+  return (typeof companyName === 'string' && companyName.length > 0);
+}, 'Company cannot be blank');
+
+UserSchema.path('companySize').validate(function(companySize) {
+  if (!this.provider) return true;
+  return (typeof companySize === 'string' && companySize.length > 0);
+}, 'Company Size cannot be blank');
 
 UserSchema.path('hashed_password').validate(function(hashed_password) {
   if (!this.provider) return true;

@@ -1,115 +1,131 @@
 <link rel="stylesheet" href="stylesheets/pagemaker.css">
 <div class="content-container">
-<div class="left-container smaller">
-	<div class="row">
-		<button ng-click="addNewPageType()">New Page Type</button>
-	</div>
-	<div class="row pages">
-		<div class="pages-container" 
-			ui-sortable ng-model="pageTypes" 
-			style="height:{{containerHeight}}px" 
-			ng-init="loadPageTypes()">
-			<div ng-repeat="page in pageTypes track by $index" 
-					class="page" 
-					ng-click="generatePreview($index)"
-					>
-					<div class="delete" ng-click="removePage(page.typename)">X</div>
-					<p>{{page.typename}}</p>
+	<div class="left-container smaller">
+		<div class="row pagesTitle">My Pages</div>
+		<div class="row pages">
+			<div class="templateInstruction">
+					Use our "BLK" templates below, or create your own layout.
+			</div>
+			<div class="pages-container" 
+				ui-sortable ng-model="pageTypes" 
+				style="height:{{containerHeight}}px" 
+				ng-init="loadPageTypes()">
+
+				<div ng-repeat="page in pageTypes track by $index" 
+						class="page" 
+						ng-click="generatePreview($index)"
+						>
+						<div class="delete" ng-click="removePage(page.typename)">X</div>
+						<p>{{page.typename}}</p>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
-<div class="right-container larger">
-	<div class="page-title">{{pagePreview.typename}}</div>
-	<div class="page-preview-controls">
-		<button ng-click="toggleHeader()" style="margin-top:0px;">Header</button>
-		<button ng-click="addHeading()">Heading</button>
-		<button ng-click="addText()">Text Body</button>
-		<button ng-click="addImage()">Image Area</button>
-		<button ng-click="addBox()">Box</button>
-		<button ng-click="addTable()">Table</button>
-		<button ng-click="addPricingTable()">Pricing Table</button>
-		<button ng-click="toggleFooter()">Footer</button>
-	</div>
-	<div class="page-preview" style="width:{{previewPageWidth}}px; height:{{previewPageHeight}}px; margin-top:{{previewPageMT}}px; margin-left:{{previewPageML}}px;">
-		<div class="page-preview-page" id="preview-page" ng-init="getPos($event)">
-			<div ng-if="pagePreview.pagesetup.header.exists" 
-				class="page-element reposition" 
-				style="width:{{previewPageWidth}}px; 
-						top:178px;
-						left:{{objectMargin}}px;
-						height:{{(pagePreview.pagesetup.header.settings.height/100) * previewPageHeight}}px;">
-						Header
+	<div class="right-container larger">
+		<div class="page-title">{{pagePreview.typename}}</div>
+		<div class="page-preview-controls">
+			<div ng-click="toggleHeader()" style="margin-top:0px;">Header<font ng-show='!pagePreview.pagesetup.header.exists' >+</font>
+				<font ng-show='pagePreview.pagesetup.header.exists' >-</font>
 			</div>
-			<div ng-if="pagePreview.pagesetup.footer.exists" 
-				class="page-element reposition" 
-				style="width:{{previewPageWidth}}px; 
-						height:{{(pagePreview.pagesetup.footer.settings.height/100) * previewPageHeight}}px; 
-						left:{{objectMargin}}px;
-						top:{{previewPageHeight * ((100 - pagePreview.pagesetup.footer.settings.height)/100)+178}}px;">Footer
-			</div>
-			<div ng-repeat="heading in pagePreview.pagesetup.heading" class="reposition">
-				<div ng-if="heading.exists" class="page-element" page-element="heading" index="{{$index}}" 
-					style="width:{{(heading.settings.width/100) * previewPageWidth}}px; 
-							height:{{((heading.settings.height/100) * previewPageHeight)}}px; 
-							left:{{((heading.settings.xpos/100) * previewPageWidth)+objectMargin}}px; 
-							top:{{(heading.settings.ypos/100) * previewPageHeight+178}}px;">
-					<div class="delete" ng-click="removeElement('Heading',$index)">X</div>
-					Heading
+			<div ng-click="addHeading()">Heading<font>+</font></div>
+			<div ng-click="addText()">Text Body<font>+</font></div>
+			<div ng-click="addImage()">Image Area<font>+</font></div>
+			<div ng-click="addBox()">Box<font>+</font></div>
+			<div ng-click="addTable()">Table<font>+</font></div>
+			<div ng-click="addPricingTable()">Pricing Table<font>+</font></div>
+			<div ng-click="toggleFooter()">Footer<font ng-show='!pagePreview.pagesetup.footer.exists' >+</font><font ng-show='pagePreview.pagesetup.footer.exists' >-</font></div>
+		</div>
+		<div class="page-preview" style="width:{{previewPageWidth}}px; height:{{previewPageHeight}}px; margin-top:{{previewPageMT}}px; margin-left:{{previewPageML}}px;">
+			<div class="page-preview-page" id="preview-page" ng-init="getPos($event)">
+				<img src="/stylesheets/images/grid.png"/>
+				<div ng-if="pagePreview.pagesetup.header.exists" 
+					class="page-element reposition" 
+					style="width:{{previewPageWidth-1}}px; 
+							top:180px;
+							left:{{objectMargin}}px;
+							height:{{(pagePreview.pagesetup.header.settings.height/100) * previewPageHeight}}px;">
+							<div class="delete" ng-click="pagePreview.pagesetup.header.exists=false">X</div>
+							Header
 				</div>
-			</div>
-			<div ng-repeat="textbody in pagePreview.pagesetup.textbody" class="reposition">
-				<div ng-if="textbody.exists" class="page-element" page-element="textbody" index="{{$index}}" 
-					style="width:{{(textbody.settings.width/100) * previewPageWidth}}px; 
-						height:{{(textbody.settings.height/100) * previewPageHeight}}px; 
-						left:{{(textbody.settings.xpos/100) * previewPageWidth+objectMargin+2}}px; 
-						top:{{(textbody.settings.ypos/100) * previewPageHeight+178}}px;">
-					<div class="delete" ng-click="removeElement('Textbody',$index)">X</div>
-					Textbody
+				<div ng-if="pagePreview.pagesetup.footer.exists" 
+					class="page-element reposition" 
+					style="width:{{previewPageWidth-1}}px; 
+							height:{{(pagePreview.pagesetup.footer.settings.height/100) * previewPageHeight}}px; 
+							left:{{objectMargin}}px;
+							top:{{previewPageHeight * ((100 - pagePreview.pagesetup.footer.settings.height)/100)+178}}px;">
+							<div class="delete" ng-click="pagePreview.pagesetup.footer.exists=false">X</div>Footer
 				</div>
-			</div>
-			<div ng-repeat="imagearea in pagePreview.pagesetup.imagearea" class="reposition">
-				<div ng-if="imagearea.exists" class="page-element" page-element="imagearea" index="{{$index}}" 
-					style="width:{{(imagearea.settings.width/100) * previewPageWidth}}px; 
-						height:{{(imagearea.settings.height/100) * previewPageHeight}}px; 
-						left:{{(imagearea.settings.xpos/100) * previewPageWidth+objectMargin+2}}px; 
-						top:{{(imagearea.settings.ypos/100) * previewPageHeight+178}}px;">
-					<div class="delete" ng-click="removeElement('Image',$index)">X</div>
-					Image
+				<div ng-repeat="heading in pagePreview.pagesetup.heading" class="reposition">
+					<div 	ng-if="heading.exists" 
+							class="page-element" 
+							page-element="heading" 
+							index="{{$index}}" 
+							style="width:{{(heading.settings.width/100) * previewPageWidth}}px; 
+								height:{{((heading.settings.height/100) * previewPageHeight)}}px; 
+								left:{{((heading.settings.xpos/100) * previewPageWidth)+objectMargin}}px; 
+								top:{{(heading.settings.ypos/100) * previewPageHeight+178}}px;">
+						<div class="delete" ng-click="removeElement('Heading',$index)">X</div>
+						Heading
+					</div>
 				</div>
-			</div>
-			<div ng-repeat="other in pagePreview.pagesetup.etc" ng-switch="other.assettype" class="reposition">
-				<div ng-switch-when="box" class="page-element" page-element="etc" index="{{$index}}" 
-					style="width:{{(other.settings.width/100) * previewPageWidth}}px; 
-						height:{{(other.settings.height/100) * previewPageHeight}}px; 
-						left:{{(other.settings.xpos/100) * previewPageWidth+objectMargin+2}}px; 
-						top:{{(other.settings.ypos/100) * previewPageHeight+178}}px; 
-						opacity:{{other.settings.opacity}};">
-					<div class="delete" ng-click="removeElement('etc',$index)">X</div>
-				{{other.assettype}}
+				<div ng-repeat="textbody in pagePreview.pagesetup.textbody" class="reposition">
+					<div ng-if="textbody.exists" class="page-element" page-element="textbody" index="{{$index}}" 
+						style="width:{{(textbody.settings.width/100) * previewPageWidth}}px; 
+							height:{{(textbody.settings.height/100) * previewPageHeight}}px; 
+							left:{{(textbody.settings.xpos/100) * previewPageWidth+objectMargin+2}}px; 
+							top:{{(textbody.settings.ypos/100) * previewPageHeight+178}}px;">
+						<div class="delete" ng-click="removeElement('Textbody',$index)">X</div>
+						Textbody
+					</div>
 				</div>
-				<div ng-switch-when="table" class="page-element" page-element="etc" index="{{$index}}" 
-					style="width:{{(other.settings.width/100) * previewPageWidth}}px; 
+				<div ng-repeat="imagearea in pagePreview.pagesetup.imagearea" class="reposition">
+					<div ng-if="imagearea.exists" class="page-element" page-element="imagearea" index="{{$index}}" 
+						style="width:{{(imagearea.settings.width/100) * previewPageWidth}}px; 
+							height:{{(imagearea.settings.height/100) * previewPageHeight}}px; 
+							left:{{(imagearea.settings.xpos/100) * previewPageWidth+objectMargin+2}}px; 
+							top:{{(imagearea.settings.ypos/100) * previewPageHeight+178}}px;">
+						<div class="delete" ng-click="removeElement('Image',$index)">X</div>
+						Image
+					</div>
+				</div>
+				<div ng-repeat="other in pagePreview.pagesetup.etc" ng-switch="other.assettype" class="reposition">
+					<div ng-switch-when="box" class="page-element" page-element="etc" index="{{$index}}" 
+						style="width:{{(other.settings.width/100) * previewPageWidth}}px; 
+							height:{{(other.settings.height/100) * previewPageHeight}}px; 
+							left:{{(other.settings.xpos/100) * previewPageWidth+objectMargin+2}}px; 
+							top:{{(other.settings.ypos/100) * previewPageHeight+178}}px; 
+							opacity:{{other.settings.opacity}};">
+						<div class="delete" ng-click="removeElement('etc',$index)">X</div>
+					{{other.assettype}}
+					</div>
+					<div ng-switch-when="table" class="page-element" page-element="etc" index="{{$index}}" 
+						style="width:{{(other.settings.width/100) * previewPageWidth}}px; 
+								height:{{(other.settings.height/100) * previewPageHeight}}px; 
+								left:{{(other.settings.xpos/100) * previewPageWidth+objectMargin+2}}px; 
+								top:{{(other.settings.ypos/100) * previewPageHeight+178}}px;">
+						<div class="delete" ng-click="removeElement('etc',$index)">X</div>
+						{{other.assettype}}
+					</div>
+					<div ng-switch-when="pricing" class="page-element" page-element="etc" index="{{$index}}" 
+						style="width:{{(other.settings.width/100) * previewPageWidth}}px; 
 							height:{{(other.settings.height/100) * previewPageHeight}}px; 
 							left:{{(other.settings.xpos/100) * previewPageWidth+objectMargin+2}}px; 
 							top:{{(other.settings.ypos/100) * previewPageHeight+178}}px;">
-					<div class="delete" ng-click="removeElement('etc',$index)">X</div>
-					{{other.assettype}}
+						<div class="delete" ng-click="removeElement('etc',$index)">X</div>
+						{{other.assettype}}
+					</div>     
 				</div>
-				<div ng-switch-when="pricing" class="page-element" page-element="etc" index="{{$index}}" 
-					style="width:{{(other.settings.width/100) * previewPageWidth}}px; 
-						height:{{(other.settings.height/100) * previewPageHeight}}px; 
-						left:{{(other.settings.xpos/100) * previewPageWidth+objectMargin+2}}px; 
-						top:{{(other.settings.ypos/100) * previewPageHeight+178}}px;">
-					<div class="delete" ng-click="removeElement('etc',$index)">X</div>
-					{{other.assettype}}
-				</div>     
+			</div>
+			<div id="saveContainer">
+				<div id="refresh" ng-click="addNewPageType()">
+					<div><img src="stylesheets/images/startfresh.png"/> </div>
+					<div id="fresh">START FRESH</div>
+				</div>
+				<div id="save">
+					<input id="saveProp-name" type="text" ng-model="pagePreview.typename" placeholder="SAVE">
+					<button  id="saveProp" ng-click="savePage()">SAVE</button>
+				</div>
 			</div>
 		</div>
-		<div id="saveContainer">
-			<input id="saveProp-name" type="text" ng-model="pagePreview.typename" placeholder="SAVE">
-			<button  id="saveProp" ng-click="savePage()">SAVE</button>
-		</div>
 	</div>
-</div>
 </div>
